@@ -299,6 +299,7 @@ exports.serve = serve;
 
 // Build
 let add_sourcemaps = false;
+console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'production') {
   console.log('Building prodution...');
