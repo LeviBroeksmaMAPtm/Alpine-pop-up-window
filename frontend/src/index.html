@@ -50,52 +50,98 @@
 
   </head>
 
-  <body class="bg-gray-300">
-    <div class="bg-gray-100 grid lg:grid-cols-2 2xl:grid-cols-5">
-      <div class="px-8 py-12 max-w-md mx-auto sm:max-w-xl lg:px-12 lg:py-24 lg:max-w-full xl:mr-0 2xl:col-span-2">
-        <div class="xl:max-w-xl">
-          <img
-            src="/img/logo.svg"
-            alt="WorkCation"
-            class="h-10"
-          />
+  <body class="bg-gray-300 h-screen flex items-center justify-center">
 
-          <img
-            src="/img/beach-work.jpg"
-            alt="woman workcation on the beach"
-            class="mt-6 rounded-lg shadow-xl sm:mt-8 sm:h-64 sm:w-full sm:object-cover sm:object-center lg:hidden"
-          />
+    <form
+      class="max-w-4xl w-full grid grid-cols-2 gap-8"
+      x-data="{
+        form: {
+          fullName: '',
+          function: '',
+          mail: '',
+          phone: ''
+        },
+        user: null,
+        submit() {
+          fetch('https://reqres.in/api/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(this.form)
+          })
+          .then(response => response.json())
+          .then(user => this.user = user);
+        }
+      }"
+      @submit.prevent="submit"
+    >
+      <template x-if="user">
 
-          <h1 class="mt-6 text-2xl font-bold text-gray-900 sm:mt-8 lg:text-3xl xl:text-4xl">
-            You van work from anywhere.
-            <br class="hidden lg:inline">
-            <span class="text-indigo-500">Take adventage of it.</span>
-          </h1>
+        <div
+        x-text="'The employee ' + user.fullName + ' was created at ' + user.createdAt"
+        class="text-orange-400 text-2xl font-bold min-w-full col-span-2"
+        ></div>
 
-          <p class="mt-2 text-gray-600 sm:mt-4 sm:text-xl">
-            Workcation helps you find work-friendly rentals in beautiful locations so you can enjoy some
-            nice weather even when you're not on vacation.
-          </p>
+      </template>
+      <div class="bg-orange-400 rounded-lg p-8 flex justify-center flex-col">
 
-          <div class="mt-4 sm:mt-6 sm:text-base">
-            <a
-              href="#"
-              class="inline-block px-5 py-3 rounded-lg bg-indigo-500 hover:bg-indigo-400 hover:-translate-y-0.5 transform focus:outline-none focus:ring focus:ring-offset-2 focus:ring-indigo-500 focus:ring-opacity-50 text-white shadow-lg uppercase tracking-wider font-semibold text-sm active:bg-indigo-600"
-              >
-              Book your escape
-            </a>
-          </div>
-        </div>
+        <h1
+          class="text-4xl font-semibold text-white"
+          x-text="form.fullName"
+        ></h1>
+        <h5 x-text="form.function" class="text-white italic text-xl"></h5>
+
+
+        <p x-text="form.mail" class="text-white italic mt-4"></p>
+
+        <p x-text="form.phone" class="text-white italic"></p>
 
       </div>
-      <div class="hidden relative lg:block 2xl:col-span-3">
-        <img
-          src="/img/beach-work.jpg"
-          alt="woman workcation on the beach"
-          class="absolute inset-0 w-full h-full object-cover object-cover"
+
+      <div>
+
+        <input
+          class="w-full my-1 rounded-md p-3"
+          type="text"
+          name="full-name"
+          id="full-name"
+          x-model="form.fullName"
+          placeholder="Full name..."
         />
-      </div>
-    </div>
-  </body>
 
+        <input
+          class="w-full my-1 rounded-md p-3"
+          type="text"
+          name="function"
+          id="function"
+          x-model="form.function"
+          placeholder="Your current function..."
+        />
+
+        <input
+          class="w-full my-1 rounded-md p-3"
+          type="email"
+          name="mail"
+          id="mail"
+          x-model="form.mail"
+          placeholder="Your email address..."
+        />
+
+        <input
+          class="w-full my-1 rounded-md p-3"
+          type="number"
+          name="phone"
+          id="phone"
+          x-model="form.phone"
+          placeholder="Your phone number..."
+        />
+
+        <button
+        type="submit"
+          class="bg-gray-800 mt-3 text-white px-4 py-2 rounded shadow-lg hover:bg-gray-600 hover:-translate-y-0.5 transform"
+        >Save employee</button>
+
+      </div>
+
+    </form>
+  </body>
 </html>
