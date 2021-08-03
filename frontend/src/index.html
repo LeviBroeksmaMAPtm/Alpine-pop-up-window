@@ -50,98 +50,30 @@
 
   </head>
 
-  <body class="bg-gray-300 h-screen flex items-center justify-center">
+  <body class="h-screen grid items-center justify-center bg-red-500">
 
-    <form
-      class="max-w-4xl w-full grid grid-cols-2 gap-8"
-      x-data="{
-        form: {
-          fullName: '',
-          function: '',
-          mail: '',
-          phone: ''
-        },
-        user: null,
-        submit() {
-          fetch('https://reqres.in/api/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify(this.form)
-          })
-          .then(response => response.json())
-          .then(user => this.user = user);
-        }
-      }"
-      @submit.prevent="submit"
+    <div
+      x-data="{ show: false }" 
+      @click.away="show = false"
+
     >
-      <template x-if="user">
 
-        <div
-        x-text="'The employee ' + user.fullName + ' was created at ' + user.createdAt"
-        class="text-orange-400 text-2xl font-bold min-w-full col-span-2"
-        ></div>
-
-      </template>
-      <div class="bg-orange-400 rounded-lg p-8 flex justify-center flex-col">
-
-        <h1
-          class="text-4xl font-semibold text-white"
-          x-text="form.fullName"
-        ></h1>
-        <h5 x-text="form.function" class="text-white italic text-xl"></h5>
-
-
-        <p x-text="form.mail" class="text-white italic mt-4"></p>
-
-        <p x-text="form.phone" class="text-white italic"></p>
-
+      <button @click="show = ! show">Links</button>
+      
+      <div 
+        class="text-white bg-gray-900 py-1 absolute rounded" 
+        x-show="show"
+        x-transition:enter="transition transform duration-1000"
+        x-transition:enter-start="scale-75 opacity-0"
+        x-transition:enter-end="scale-100 opacity-100"
+        x-transition:leave-end="scale-75 opacity-0"
+      >
+        <a class="block hover:bg-red-700 px-2 py-1" href="#">Edit</a>
+        <a class="block hover:bg-red-700 px-2 py-1" href="#">Delete</a>
+        <a class="block hover:bg-red-700 px-2 py-1" href="#">Report Spam</a>
       </div>
+   
+    </div>
 
-      <div>
-
-        <input
-          class="w-full my-1 rounded-md p-3"
-          type="text"
-          name="full-name"
-          id="full-name"
-          x-model="form.fullName"
-          placeholder="Full name..."
-        />
-
-        <input
-          class="w-full my-1 rounded-md p-3"
-          type="text"
-          name="function"
-          id="function"
-          x-model="form.function"
-          placeholder="Your current function..."
-        />
-
-        <input
-          class="w-full my-1 rounded-md p-3"
-          type="email"
-          name="mail"
-          id="mail"
-          x-model="form.mail"
-          placeholder="Your email address..."
-        />
-
-        <input
-          class="w-full my-1 rounded-md p-3"
-          type="number"
-          name="phone"
-          id="phone"
-          x-model="form.phone"
-          placeholder="Your phone number..."
-        />
-
-        <button
-        type="submit"
-          class="bg-gray-800 mt-3 text-white px-4 py-2 rounded shadow-lg hover:bg-gray-600 hover:-translate-y-0.5 transform"
-        >Save employee</button>
-
-      </div>
-
-    </form>
   </body>
 </html>
